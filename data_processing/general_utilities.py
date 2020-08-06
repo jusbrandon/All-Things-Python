@@ -1,7 +1,7 @@
-from os import walk
+from os import walk, makedirs
 import multiprocessing
 import psutil
-
+import logging
 from pprint import pprint
 
 
@@ -13,6 +13,7 @@ def grab_all_files(folder_path):
         f.extend(temp)
     return f
 
+
 # Grab System's Data
 def get_system_data():
     system_data = {}
@@ -20,3 +21,11 @@ def get_system_data():
     system_data["Total Physical Memory available"] = psutil.virtual_memory()
 
 
+def create_directory(file_directory):
+    try:
+        makedirs(file_directory)
+    except Exception as e:
+        if "Cannot create a file when that file already exists" in str(e):
+            pass
+        else:
+            logging.error(e)
